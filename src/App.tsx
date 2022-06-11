@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useAppContext } from './context';
+import QuestionCard from './components/QuestionCard';
+import { RingLoader } from 'react-spinners';
 
-function App() {
+const App = () => {
+  const { state, isLoading, startGame } = useAppContext();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1 className="heading">React Typescript Quiz Game</h1>
+      {(state?.gameOver ||
+        state?.userAnswers.length === state?.questions.length) && (
+        <button className="btn btn-lg" onClick={startGame}>
+          Start
+        </button>
+      )}
+      {isLoading && (
+        <div className="loading-wrapper">
+          <RingLoader color="#0d6efd" size={150} />
+        </div>
+      )}
+
+      {!isLoading && !state?.gameOver && <QuestionCard />}
     </div>
   );
-}
+};
 
 export default App;
